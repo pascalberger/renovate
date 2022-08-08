@@ -2,6 +2,8 @@ import is from '@sindresorhus/is';
 import { loadAll } from 'js-yaml';
 import { logger } from '../../../logger';
 import { newlineRegex, regEx } from '../../../util/regex';
+import { KubernetesApiDatasource } from '../../datasource/kubernetes-api';
+import * as kubernetesApiVersioning from '../../versioning/kubernetes-api';
 import { getDep } from '../dockerfile/extract';
 import type { PackageDependency, PackageFile } from '../types';
 import type { KubernetesConfiguration } from './types';
@@ -70,5 +72,7 @@ function extractApis(content: string, fileName: string): PackageDependency[] {
     .map((configuration) => ({
       depName: configuration.kind,
       currentValue: configuration.apiVersion,
+      datasource: KubernetesApiDatasource.id,
+      versioning: kubernetesApiVersioning.id,
     }));
 }
